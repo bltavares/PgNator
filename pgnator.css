@@ -1,0 +1,23 @@
+.pgnator{
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+.pgnator li{
+    display: block;
+    float: left;
+}
+
+.pgnator a{
+    display: block;
+    float: left;
+    margin: 0px 10px;
+    padding: 5px;
+    text-decoration: none;
+    color: #000;
+}
+
+.pgnator a.active{
+    color: red;
+}
