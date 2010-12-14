@@ -1,0 +1,86 @@
+COMO UTILIZAR O PLUGIN
+
+Depois de instalado, o PgNator de dá total liberdade de criar wpQueries
+
+1. Crie um PgNator
+
+$pgnator = new Pgnator();
+	ou
+$pgnator = new Pgnator("caminho/completo/para/o/estilo.css")
+
+2. Gere suas queries utilizando o Pgnator
+
+$posts = $pgnator->content("argumentos=normais&do=WPQUERY");
+	ou
+$posts = $pgnator->content("SELECT * FROM wp_posts",true);
+
+3. Faça o loop normalmente
+
+while($posts) {
+	$posts->the_post();
+	/// Estilize do seu jeito, como você faz normalmente
+	...
+	///	
+}
+
+4. Coloque o link para as páginas
+
+echo $pgnator->createMenu();
+
+5. Só isso
+
+
+////
+
+HOW TO USE THE PLUGIN
+
+After installing, PgNator whill give you freedom with your WPqueries
+
+1. Create a PgNator
+
+$pgnator = new Pgnator();
+	ou
+$pgnator = new Pgnator("path/to/your/own/style.css")
+
+2. Generate your queries using Pgnator
+
+$posts = $pgnator->content("normal=arguments&like=WPQuerie");
+	ou
+$posts = $pgnator->content("SELECT * FROM wp_posts",true);
+
+3. Create your loop
+
+while($posts) {
+	$posts->the_post();
+	/// Create your own code
+	...
+	///	
+}
+
+
+4. Generate page links
+
+echo $pgnator->createMenu();
+
+5. Done
+
+
+ Referencias / Reference
+
+$pgnator->numPosts = 8; // Set the number of posts_per_page / Seleciona o numero de posts por paginador
+
+$pgnator->cleanURL = true; //Set clean urls / Selecion urls limpas
+
+$pgnator->content($query, $sql = false) // Generate a wpqueri object / Gera um objeto WPQuerie
+
+$pgnator->createMenu() // Return a menu string / Retorna uma string do menu
+
+$pgnator->rename($previous,$next) // Renames the next and previous links / Renomeia os links de próximo e anterior
+
+$pgnator->changeRange($int) // Change the range of numbers / Muda a faixa de numeros
+
+
+
+
+
+
