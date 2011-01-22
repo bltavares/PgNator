@@ -54,6 +54,9 @@ echo $pgnator->createMenu();
 
 == Changelog ==
 
+= 0.6 =
+* Improved link creation
+
 = 0.5 =
 * Launch at github and WP Plugins
 

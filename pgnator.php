@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Pgnator
- * @version 0.5
+ * @version 0.6
  */
 /*
 Plugin Name: Pgnator
 Plugin URI: #
 Description: Pequeno paginador para wp_query e sql dinamico
 Author: Bruno Lara Tavares
-Version: 0.5
+Version: 0.6
 Author URI: #
 */
 class Pgnator
@@ -58,15 +58,14 @@ $this->pg = is_null($_GET["pg"]) ? 1 : $_GET["pg"];
 
 function createMenu()
 {
-    $address = $this->cleanURL ? $_SERVER["REDIRECT_URL"] . "?pg=" : "?page_id=".$_GET[page_id]."&pg=";
     $str = "<ul class='pgnator'>";
        if ($this->numpgs > 1)
        {
            //Link para pagina anterior, se for preciso
            //Link for previous page, if necessary
             if($this->pg > 1){
-                $str .= "<li><a title='Primeiro' href='".$address."1'>".$this->first."</a></li>";
-                $str .= "<li><a title='Anterior' href='".$address.($this->pg-1)."'>".$this->prev."</a></li>";
+                $str .= "<li><a title='Primeiro' href='".$this->generateUrl("pg=1")."'>".$this->first."</a></li>";
+                $str .= "<li><a title='Anterior' href='".$this->generateUrl("pg=".($this->pg-1))."'>".$this->prev."</a></li>";
             }
                  
             //Loop para números baseado na faixa
@@ -75,14 +74,14 @@ function createMenu()
             {
                 $class = $cont == $this->pg ? 'active' : '';
                 if(($cont < $this->pg + $this->range) && ($cont > $this->pg - $this->range))
-                $str .= "<li><a class='".$class."' href='".$address.$cont."'>".$cont."</a></li>";
+                $str .= "<li><a class='".$class."' href='".$this->generateUrl("pg=".$cont)."'>".$cont."</a></li>";
             }
             //Link para nextima pagina, se for preciso
             //Link for the last page, if necessary
             if($this->pg < $this->numpgs )
             {
-                $str .= "<li><a title='Próximo' href='".$address.($this->pg+1)."'>".$this->next."</a></li>";
-                $str .= "<li><a title='Ultimo' href='".$address.ceil($this->numpgs)."'>".$this->last."</a></li>";
+                $str .= "<li><a title='Próximo' href='".$this->generateUrl("pg=".($this->pg + 1))."'>".$this->next."</a></li>";
+                $str .= "<li><a title='Ultimo' href='".$this->generateUrl("pg=".$this->numpgs)."'>".$this->last."</a></li>";
             }
                 
        }
@@ -104,6 +103,37 @@ function changeRange($int)
     //Muda faixa de numero
     //Change numbers range
  $this->range = $int + 1;
+}
+
+protected function parseQuery($primeiro,$segundo)
+{
+	$query = "";
+	$primeiro = explode("&",$primeiro);
+	foreach ($primeiro as $line)
+	{
+		list($key, $value) = explode("=", $line);
+		$newPri[$key] = $value;
+	}
+	$segundo = explode("&",$segundo);
+	foreach ($segundo as $line)
+	{
+		list($key, $value) = explode("=", $line);
+		$newSeg[$key] = $value;
+	}
+	$query = array_merge($newPri,$newSeg);
+	
+	return http_build_query($query);
+ 
+}
+
+protected function generateUrl($updateQuery = "")
+{
+	$url = "http://".$_SERVER["SERVER_NAME"].$_SERVER["PHP_SELF"];
+	if($updateQuery)
+	{
+		$url .= "?". $this->parseQuery($_SERVER['QUERY_STRING'],$updateQuery);
+	}
+	return $url;
 }
 
 }
